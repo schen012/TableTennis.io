@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Table Tennis Leaderboard</title>
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Table Tennis Leaderboard</h1>
@@ -18,7 +18,7 @@
                     <th>Name</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="leaderboard-body">
                 {% for player in players %}
                 <tr>
                     <td>{{ player.position }}</td>
@@ -31,7 +31,7 @@
     
     <section>
         <h2>Challenge</h2>
-        <form id="challenge-form" action="cgi-bin/process_challenge.py" method="post">
+        <form id="challenge-form" onsubmit="handleChallenge(event)">
             <label for="winner">Winner:</label>
             <input type="text" id="winner" name="winner" required>
             <label for="loser">Loser:</label>
@@ -42,11 +42,55 @@
     
     <section>
         <h2>Add New Player</h2>
-        <form id="add-player-form" action="cgi-bin/add_player.py" method="post">
+        <form id="add-player-form" onsubmit="handleAddPlayer(event)">
             <label for="new-player">Player Name:</label>
             <input type="text" id="new-player" name="new-player" required>
             <button type="submit">Add Player</button>
         </form>
     </section>
+
+    <script>
+        function handleChallenge(event) {
+            event.preventDefault();
+            const winner = document.getElementById('winner').value.trim();
+            const loser = document.getElementById('loser').value.trim();
+            
+            const rows = Array.from(document.querySelectorAll('#leaderboard-body tr'));
+            let winnerRow, loserRow;
+            
+            rows.forEach(row => {
+                if (row.children[1].textContent === winner) winnerRow = row;
+                if (row.children[1].textContent === loser) loserRow = row;
+            });
+
+            if (winnerRow && loserRow) {
+                const winnerPosition = parseInt(winnerRow.children[0].textContent);
+                const loserPosition = parseInt(loserRow.children[0].textContent);
+
+                if (winnerPosition > loserPosition) {
+                    const temp = winnerRow.children[0].textContent;
+                    winnerRow.children[0].textContent = loserRow.children[0].textContent;
+                    loserRow.children[0].textContent = temp;
+
+                    const parent = winnerRow.parentNode;
+                    parent.insertBefore(winnerRow, loserRow);
+                } else {
+                    alert('Invalid challenge. The winner must be ranked below the loser.');
+                }
+            } else {
+                alert('Invalid challenge. Make sure both players exist.');
+            }
+        }
+
+        function handleAddPlayer(event) {
+            event.preventDefault();
+            const newPlayer = document.getElementById('new-player').value.trim();
+
+            const rows = document.querySelectorAll('#leaderboard-body tr');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `<td>${rows.length + 1}</td><td>${newPlayer}</td>`;
+            document.getElementById('leaderboard-body').appendChild(newRow);
+        }
+    </script>
 </body>
 </html>
