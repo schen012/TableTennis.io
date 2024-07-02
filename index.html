@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Tennis Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Table Tennis Leaderboard</h1>
+    
+    <section>
+        <h2>Leaderboard</h2>
+        <table id="leaderboard">
+            <thead>
+                <tr>
+                    <th>Position</th>
+                    <th>Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Leaderboard data will be inserted here -->
+            </tbody>
+        </table>
+    </section>
+    
+    <section>
+        <h2>Challenge</h2>
+        <form id="challenge-form">
+            <label for="winner">Winner:</label>
+            <input type="text" id="winner" name="winner" required>
+            <label for="loser">Loser:</label>
+            <input type="text" id="loser" name="loser" required>
+            <button type="submit">Submit</button>
+        </form>
+    </section>
+    
+    <section>
+        <h2>Add New Player</h2>
+        <form id="add-player-form">
+            <label for="new-player">Player Name:</label>
+            <input type="text" id="new-player" name="new-player" required>
+            <button type="submit">Add Player</button>
+        </form>
+    </section>
+    
+    <script src="script.js"></script>
+</body>
+</html>
